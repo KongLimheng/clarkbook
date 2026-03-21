@@ -1,7 +1,7 @@
 {
   "name": "clarkbook",
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "WebAssembly for Plutobook",
   "author": {
     "name": "Seanghay Yath",
