@@ -15,6 +15,14 @@ export const PageSize = {
 	Letter: [8.5 * 72, 11 * 72],
 	Legal: [8.5 * 72, 14 * 72],
 	Ledger: [11 * 72, 17 * 72],
+	A3Landscape: [(420 * 72) / 25.4, (297 * 72) / 25.4],
+	A4Landscape: [(297 * 72) / 25.4, (210 * 72) / 25.4],
+	A5Landscape: [(210 * 72) / 25.4, (148 * 72) / 25.4],
+	B4Landscape: [(353 * 72) / 25.4, (250 * 72) / 25.4],
+	B5Landscape: [(250 * 72) / 25.4, (176 * 72) / 25.4],
+	LetterLandscape: [11 * 72, 8.5 * 72],
+	LegalLandscape: [14 * 72, 8.5 * 72],
+	LedgerLandscape: [17 * 72, 11 * 72],
 };
 
 export const Margins = {

@@ -14,6 +14,11 @@ import clsx from "clsx";
 import PdfPreview from "./PdfPreview.jsx";
 import logoUrl from "../public/plutoprint.jpg?url";
 
+export function landscape(pageSize) {
+	const [w, h] = pageSize;
+	return [h, w];
+}
+
 const TEMPLATE_DEFAULT = `<!DOCTYPE html>
 <html>
 <head>
@@ -1654,13 +1659,13 @@ const TEMPLATE_PROPOSAL = `<!DOCTYPE html>
 </html>`;
 
 const TEMPLATES = [
-  { id: "default", label: "Default", html: TEMPLATE_DEFAULT },
-  { id: "invoice", label: "Invoice", html: TEMPLATE_INVOICE },
-  { id: "resume", label: "Résumé", html: TEMPLATE_RESUME },
-  { id: "report", label: "Report", html: TEMPLATE_REPORT },
-  { id: "certificate", label: "Certificate", html: TEMPLATE_CERTIFICATE },
-  { id: "menu", label: "Menu", html: TEMPLATE_MENU },
-  { id: "proposal", label: "Proposal (4 pages)", html: TEMPLATE_PROPOSAL },
+	{ id: "default", label: "Default", html: TEMPLATE_DEFAULT },
+	{ id: "invoice", label: "Invoice", html: TEMPLATE_INVOICE },
+	{ id: "resume", label: "Résumé", html: TEMPLATE_RESUME },
+	{ id: "report", label: "Report", html: TEMPLATE_REPORT },
+	{ id: "certificate", label: "Certificate", html: TEMPLATE_CERTIFICATE },
+	{ id: "menu", label: "Menu", html: TEMPLATE_MENU },
+	{ id: "proposal", label: "Proposal (4 pages)", html: TEMPLATE_PROPOSAL },
 ];
 
 const geistMonoTheme = EditorView.theme({
@@ -1717,6 +1722,7 @@ export default function App() {
 	const [html, setHtml] = useState(TEMPLATES[0].html);
 	const [format, setFormat] = useState("pdf");
 	const [pageSize, setPageSize] = useState("A4");
+	const [orientation, setOrientation] = useState("portrait");
 	const [margins, setMargins] = useState("None");
 	const [imgWidth, setImgWidth] = useState(1200);
 	const [imgHeight, setImgHeight] = useState(800);
@@ -1777,9 +1783,13 @@ export default function App() {
 				const t0 = performance.now();
 				let bytes;
 				let mime;
+				const resolvedPageSize =
+					orientation === "landscape"
+						? landscape(PageSize[pageSize])
+						: PageSize[pageSize];
 				if (format === "pdf") {
 					bytes = bookRef.current.pdf(html, {
-						pageSize: PageSize[pageSize],
+						pageSize: resolvedPageSize,
 						margins: Margins[margins],
 						...exportOptions,
 					});
@@ -1808,6 +1818,7 @@ export default function App() {
 		html,
 		format,
 		pageSize,
+		orientation,
 		margins,
 		imgWidth,
 		imgHeight,
@@ -1822,9 +1833,13 @@ export default function App() {
 			let bytes;
 			let mime;
 			let ext;
+			const resolvedPageSize =
+				orientation === "landscape"
+					? landscape(PageSize[pageSize])
+					: PageSize[pageSize];
 			if (format === "pdf") {
 				bytes = bookRef.current.pdf(html, {
-					pageSize: PageSize[pageSize],
+					pageSize: resolvedPageSize,
 					margins: Margins[margins],
 					...exportOptions,
 				});
@@ -1920,7 +1935,10 @@ export default function App() {
 					value={templateId}
 					onChange={(id) => {
 						const t = TEMPLATES.find((t) => t.id === id);
-						if (t) { setTemplateId(id); setHtml(t.html); }
+						if (t) {
+							setTemplateId(id);
+							setHtml(t.html);
+						}
 					}}
 					options={TEMPLATES.map((t) => ({ value: t.id, label: t.label }))}
 				/>
@@ -1934,6 +1952,14 @@ export default function App() {
 							value={pageSize}
 							onChange={setPageSize}
 							options={PAGE_SIZES}
+						/>
+						<Select
+							value={orientation}
+							onChange={setOrientation}
+							options={[
+								{ value: "portrait", label: "Portrait" },
+								{ value: "landscape", label: "Landscape" },
+							]}
 						/>
 						<Select
 							value={margins}
@@ -2055,7 +2081,7 @@ export default function App() {
 					<>
 						<span className="text-[#ddd] dark:text-[#222]">·</span>
 						<span>
-							{pageSize} · {margins}
+							{pageSize} · {orientation} · {margins}
 						</span>
 					</>
 				)}
