@@ -1,0 +1,26 @@
+{
+  "name": "clarkbook",
+  "type": "module",
+  "description": "WebAssembly for Plutobook",
+  "author": {
+    "name": "Seanghay Yath",
+    "email": "seanghay.dev@gmail.com"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": "seanghay/clarkbook",
+  "license": "MPL-2.0",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "browser": "./src/browser.js",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./plutobook.wasm": "./src/plutobook.wasm"
+  },
+  "scripts": {}
+}
