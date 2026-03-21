@@ -43,6 +43,38 @@ const book = await createBook({
 });
 ```
 
+### Next.js
+
+```js
+import path from "node:path";
+import { createBook } from "clarkbook";
+import { NextResponse } from "next/server";
+import fs from "node:fs/promises";
+
+const fontFile = path.join(
+  process.cwd(),
+  "app/fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf",
+);
+
+const book = await createBook({
+  fonts: [["GoogleSans.ttf", await fs.readFile(fontFile)]],
+});
+
+export async function GET() {
+  const buffer = book.image("<h1>Hello, world</h1>", {
+    format: "jpeg",
+  });
+
+  return new NextResponse(new Uint8Array(buffer), {
+    status: 200,
+    headers: {
+      "Content-Type": "image/jpeg",
+      "Content-Disposition": 'inline; filename="document.jpg"',
+    },
+  });
+}
+```
+
 ### Resources
 
 Pass additional assets (images, stylesheets) via `resources`:
