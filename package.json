@@ -8,7 +8,7 @@
     "email": "seanghay.dev@gmail.com"
   },
   "files": [
-    "dist"
+    "src"
   ],
   "repository": "seanghay/clarkbook",
   "license": "MPL-2.0",
