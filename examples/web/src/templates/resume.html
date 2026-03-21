@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Google Sans', sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      font-size: 12px;
+      line-height: 1.65;
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 40px 24px;
+    }
+    .sidebar .name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .sidebar .role {
+      font-size: 11px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 28px;
+    }
+    .sidebar .section-title {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #475569;
+      margin-bottom: 10px;
+      margin-top: 24px;
+    }
+    .sidebar .contact-item {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 5px;
+    }
+    .skill-bar { margin-bottom: 8px; }
+    .skill-label { font-size: 11px; color: #94a3b8; margin-bottom: 3px; }
+    .skill-track {
+      height: 3px;
+      background: #1e293b;
+      border-radius: 2px;
+    }
+    .skill-fill {
+      height: 3px;
+      background: #3b82f6;
+      border-radius: 2px;
+    }
+    .lang-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+    .lang-level { color: #475569; }
+    .main {
+      flex: 1;
+      padding: 40px 40px 40px 36px;
+    }
+    .main-section { margin-bottom: 28px; }
+    .main-section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #3b82f6;
+      font-weight: 700;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+    .summary-text { color: #475569; font-size: 12px; line-height: 1.7; }
+    .job { margin-bottom: 18px; }
+    .job-header { display: flex; justify-content: space-between; align-items: baseline; }
+    .job-title { font-weight: 700; color: #0f172a; font-size: 13px; }
+    .job-date { font-size: 11px; color: #94a3b8; }
+    .job-company { font-size: 12px; color: #3b82f6; margin-bottom: 6px; }
+    .job ul { padding-left: 16px; }
+    .job li { color: #475569; margin-bottom: 3px; font-size: 11.5px; }
+    .edu-item { margin-bottom: 12px; }
+    .edu-degree { font-weight: 700; color: #0f172a; }
+    .edu-school { color: #3b82f6; font-size: 12px; }
+    .edu-year { font-size: 11px; color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="name">Alex Morgan</div>
+    <div class="role">Senior Product Designer</div>
+
+    <div class="section-title">Contact</div>
+    <div class="contact-item">alex@morgan.design</div>
+    <div class="contact-item">+1 (415) 555-0192</div>
+    <div class="contact-item">San Francisco, CA</div>
+    <div class="contact-item">linkedin.com/in/alexmorgan</div>
+
+    <div class="section-title">Skills</div>
+    <div class="skill-bar">
+      <div class="skill-label">Figma & Sketch</div>
+      <div class="skill-track"><div class="skill-fill" style="width:95%"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-label">User Research</div>
+      <div class="skill-track"><div class="skill-fill" style="width:88%"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-label">Prototyping</div>
+      <div class="skill-track"><div class="skill-fill" style="width:90%"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-label">Design Systems</div>
+      <div class="skill-track"><div class="skill-fill" style="width:85%"></div></div>
+    </div>
+    <div class="skill-bar">
+      <div class="skill-label">HTML / CSS</div>
+      <div class="skill-track"><div class="skill-fill" style="width:70%"></div></div>
+    </div>
+
+    <div class="section-title">Languages</div>
+    <div class="lang-item"><span>English</span><span class="lang-level">Native</span></div>
+    <div class="lang-item"><span>French</span><span class="lang-level">Fluent</span></div>
+    <div class="lang-item"><span>Spanish</span><span class="lang-level">Basic</span></div>
+  </div>
+
+  <div class="main">
+    <div class="main-section">
+      <div class="main-section-title">Professional Summary</div>
+      <p class="summary-text">Senior Product Designer with 8+ years crafting intuitive digital experiences for startups and Fortune 500 companies. Passionate about design systems, accessibility, and cross-functional collaboration. Led design for products used by over 10M users.</p>
+    </div>
+
+    <div class="main-section">
+      <div class="main-section-title">Experience</div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Lead Product Designer</div>
+          <div class="job-date">Jan 2021 – Present</div>
+        </div>
+        <div class="job-company">Vercel Inc. · San Francisco, CA</div>
+        <ul>
+          <li>Rebuilt the dashboard UI, reducing task completion time by 34%</li>
+          <li>Established a company-wide design system adopted by 12 product teams</li>
+          <li>Conducted 60+ user interviews to inform product roadmap decisions</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">Product Designer</div>
+          <div class="job-date">Mar 2018 – Dec 2020</div>
+        </div>
+        <div class="job-company">Stripe · Remote</div>
+        <ul>
+          <li>Designed the onboarding flow for Stripe Atlas, serving 5,000+ new businesses/month</li>
+          <li>Collaborated with engineers and PMs on the Stripe Dashboard redesign</li>
+          <li>Shipped 3 major product features from concept to production</li>
+        </ul>
+      </div>
+
+      <div class="job">
+        <div class="job-header">
+          <div class="job-title">UX Designer</div>
+          <div class="job-date">Jun 2016 – Feb 2018</div>
+        </div>
+        <div class="job-company">Freelance · Various</div>
+        <ul>
+          <li>Delivered brand identities and web designs for 15+ clients</li>
+          <li>Specialized in SaaS and e-commerce UI/UX projects</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main-section">
+      <div class="main-section-title">Education</div>
+      <div class="edu-item">
+        <div class="edu-degree">B.F.A. in Graphic Design</div>
+        <div class="edu-school">California College of the Arts</div>
+        <div class="edu-year">2012 – 2016</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-degree">Certificate in HCI</div>
+        <div class="edu-school">Stanford University (Online)</div>
+        <div class="edu-year">2019</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

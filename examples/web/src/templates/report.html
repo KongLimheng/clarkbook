@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Google Sans', sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 56px 64px;
+      font-size: 13px;
+      line-height: 1.7;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .report-header {
+      border-bottom: 3px solid #1e293b;
+      padding-bottom: 24px;
+      margin-bottom: 40px;
+    }
+    .report-tag {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #3b82f6;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .report-title {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .report-meta {
+      display: flex;
+      gap: 24px;
+      font-size: 12px;
+      color: #64748b;
+    }
+    .report-meta span::before { content: "· "; }
+    .report-meta span:first-child::before { content: ""; }
+    h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 32px 0 12px;
+      padding-left: 12px;
+      border-left: 3px solid #3b82f6;
+    }
+    p { color: #374151; margin-bottom: 12px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 28px;
+      font-size: 12px;
+    }
+    thead {
+      background: #0f172a;
+      color: #fff;
+    }
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    tbody tr:nth-child(even) { background: #f8fafc; }
+    tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #374151;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-green { background: #dcfce7; color: #15803d; }
+    .badge-yellow { background: #fef9c3; color: #a16207; }
+    .badge-red { background: #fee2e2; color: #b91c1c; }
+    .chart { margin: 20px 0 32px; }
+    .chart-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 12px;
+    }
+    .chart-label { width: 110px; font-size: 12px; color: #475569; text-align: right; flex-shrink: 0; }
+    .chart-bar-bg { flex: 1; height: 20px; background: #f1f5f9; border-radius: 4px; overflow: hidden; }
+    .chart-bar { height: 100%; background: #3b82f6; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; }
+    .chart-val { font-size: 11px; color: #fff; font-weight: 600; }
+    .callout {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 14px 18px;
+      border-radius: 0 6px 6px 0;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #1e40af;
+    }
+  </style>
+</head>
+<body>
+  <div class="report-header">
+    <div class="report-tag">Quarterly Business Report</div>
+    <div class="report-title">Q1 2025 Performance Review</div>
+    <div class="report-meta">
+      <span>Prepared by Finance &amp; Strategy</span>
+      <span>March 31, 2025</span>
+      <span>Confidential</span>
+    </div>
+  </div>
+
+  <h2>Executive Summary</h2>
+  <p>Q1 2025 delivered strong results across all business units, with total revenue reaching <strong>$4.2M</strong> — a 23% year-over-year increase. Customer acquisition costs improved by 11%, and net promoter score reached an all-time high of 72. The APAC region led growth at +38%.</p>
+
+  <div class="callout">
+    Key highlight: Monthly recurring revenue crossed the $1M milestone in February 2025 for the first time in company history.
+  </div>
+
+  <h2>Revenue by Region</h2>
+  <div class="chart">
+    <div class="chart-row">
+      <div class="chart-label">North America</div>
+      <div class="chart-bar-bg"><div class="chart-bar" style="width:78%"><span class="chart-val">$1.96M</span></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">Europe</div>
+      <div class="chart-bar-bg"><div class="chart-bar" style="width:54%"><span class="chart-val">$1.13M</span></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">APAC</div>
+      <div class="chart-bar-bg"><div class="chart-bar" style="width:42%"><span class="chart-val">$0.88M</span></div></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-label">Other</div>
+      <div class="chart-bar-bg"><div class="chart-bar" style="width:11%"><span class="chart-val">$0.23M</span></div></div>
+    </div>
+  </div>
+
+  <h2>KPI Summary</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Q1 2025</th>
+        <th>Q4 2024</th>
+        <th>YoY Change</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total Revenue</td>
+        <td><strong>$4.2M</strong></td>
+        <td>$3.8M</td>
+        <td>+10.5%</td>
+        <td><span class="badge badge-green">On Track</span></td>
+      </tr>
+      <tr>
+        <td>New Customers</td>
+        <td><strong>1,240</strong></td>
+        <td>1,050</td>
+        <td>+18.1%</td>
+        <td><span class="badge badge-green">On Track</span></td>
+      </tr>
+      <tr>
+        <td>Churn Rate</td>
+        <td><strong>2.3%</strong></td>
+        <td>2.1%</td>
+        <td>+0.2pp</td>
+        <td><span class="badge badge-yellow">Watch</span></td>
+      </tr>
+      <tr>
+        <td>Avg. Deal Size</td>
+        <td><strong>$3,387</strong></td>
+        <td>$3,619</td>
+        <td>−6.4%</td>
+        <td><span class="badge badge-red">Below Target</span></td>
+      </tr>
+      <tr>
+        <td>NPS Score</td>
+        <td><strong>72</strong></td>
+        <td>68</td>
+        <td>+4</td>
+        <td><span class="badge badge-green">On Track</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Conclusions &amp; Outlook</h2>
+  <p>The business is on a solid growth trajectory entering Q2. Priority actions include addressing the decline in average deal size through mid-market sales training, and investing in churn prevention initiatives in the SMB segment. APAC expansion remains the highest-ROI growth lever for the remainder of 2025.</p>
+</body>
+</html>

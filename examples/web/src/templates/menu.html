@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Google Sans', sans-serif;
+      background: #1a0a00;
+      color: #f5e6d3;
+      padding: 48px 56px;
+      min-height: 100vh;
+    }
+    .restaurant-header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #3d2010;
+    }
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c9833a;
+      margin-bottom: 10px;
+    }
+    .restaurant-name {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #f5e6d3;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .restaurant-sub {
+      font-size: 13px;
+      color: #7a5540;
+      letter-spacing: 0.04em;
+    }
+    .menu-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .menu-section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #c9833a;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #3d2010;
+    }
+    .menu-item { margin-bottom: 18px; }
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3px;
+    }
+    .item-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: #f5e6d3;
+    }
+    .item-price {
+      font-size: 14px;
+      font-weight: 600;
+      color: #c9833a;
+    }
+    .item-desc {
+      font-size: 11.5px;
+      color: #7a5540;
+      line-height: 1.5;
+    }
+    .item-tags { margin-top: 4px; display: flex; gap: 5px; flex-wrap: wrap; }
+    .item-tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      border: 1px solid #3d2010;
+      color: #7a5540;
+      border-radius: 3px;
+    }
+    .item-tag.special { border-color: #c9833a; color: #c9833a; }
+    .divider {
+      border: none;
+      border-top: 1px solid #3d2010;
+      margin: 8px 0 20px;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid #3d2010;
+      font-size: 11px;
+      color: #4a2e1a;
+      line-height: 1.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="restaurant-header">
+    <div class="tag">Est. 2018 · Fine Dining</div>
+    <div class="restaurant-name">Ember &amp; Oak</div>
+    <div class="restaurant-sub">Wood-fired cuisine · Seasonal ingredients</div>
+  </div>
+
+  <div class="menu-columns">
+    <div>
+      <div class="menu-section">
+        <div class="section-title">Starters</div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Smoked Burrata</div>
+            <div class="item-price">$18</div>
+          </div>
+          <div class="item-desc">Heirloom tomatoes, basil oil, aged balsamic, grilled sourdough</div>
+          <div class="item-tags"><span class="item-tag special">Chef's Pick</span><span class="item-tag">Vegetarian</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Oak-Roasted Bone Marrow</div>
+            <div class="item-price">$22</div>
+          </div>
+          <div class="item-desc">Chimichurri, pickled shallots, parsley salad, grilled crostini</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Tuna Crudo</div>
+            <div class="item-price">$24</div>
+          </div>
+          <div class="item-desc">Yuzu kosho, cucumber, sesame, micro shiso, ponzu dressing</div>
+          <div class="item-tags"><span class="item-tag">Gluten-Free</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Ember Onion Soup</div>
+            <div class="item-price">$16</div>
+          </div>
+          <div class="item-desc">Slow-roasted cipollini onions, gruyère crust, fresh thyme</div>
+          <div class="item-tags"><span class="item-tag">Vegetarian</span></div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="section-title">Salads</div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Little Gem Caesar</div>
+            <div class="item-price">$17</div>
+          </div>
+          <div class="item-desc">House-made anchovy dressing, parmesan crisp, sourdough crouton</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Roasted Beet &amp; Farro</div>
+            <div class="item-price">$19</div>
+          </div>
+          <div class="item-desc">Whipped goat cheese, candied walnuts, orange vinaigrette, arugula</div>
+          <div class="item-tags"><span class="item-tag">Vegetarian</span><span class="item-tag">Gluten-Free</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="menu-section">
+        <div class="section-title">Mains</div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Dry-Aged Ribeye</div>
+            <div class="item-price">$68</div>
+          </div>
+          <div class="item-desc">16oz prime cut, truffle butter, bone-in, roasted garlic jus, hand-cut fries</div>
+          <div class="item-tags"><span class="item-tag special">Signature</span><span class="item-tag">Gluten-Free</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Whole Roasted Duck</div>
+            <div class="item-price">$54</div>
+          </div>
+          <div class="item-desc">Cherry gastrique, wild rice pilaf, braised endive, duck jus</div>
+          <div class="item-tags"><span class="item-tag special">Chef's Pick</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Wood-Fired Salmon</div>
+            <div class="item-price">$44</div>
+          </div>
+          <div class="item-desc">Dill beurre blanc, forbidden rice, roasted fennel, capers</div>
+          <div class="item-tags"><span class="item-tag">Gluten-Free</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Wild Mushroom Risotto</div>
+            <div class="item-price">$38</div>
+          </div>
+          <div class="item-desc">Porcini, chanterelle, truffle oil, aged parmigiano, fresh herbs</div>
+          <div class="item-tags"><span class="item-tag">Vegetarian</span><span class="item-tag">Gluten-Free</span></div>
+        </div>
+      </div>
+
+      <div class="menu-section">
+        <div class="section-title">Desserts</div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Valrhona Chocolate Fondant</div>
+            <div class="item-price">$16</div>
+          </div>
+          <div class="item-desc">Warm dark chocolate, salted caramel ice cream, hazelnut praline</div>
+          <div class="item-tags"><span class="item-tag special">Must Try</span></div>
+        </div>
+        <div class="menu-item">
+          <div class="item-header">
+            <div class="item-name">Seasonal Fruit Pavlova</div>
+            <div class="item-price">$14</div>
+          </div>
+          <div class="item-desc">Meringue, chantilly cream, passion fruit curd, fresh berries</div>
+          <div class="item-tags"><span class="item-tag">Gluten-Free</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Please inform your server of any allergies or dietary requirements.<br>
+    Gratuity of 20% added for parties of 6 or more. · Prices exclusive of tax.
+  </div>
+</body>
+</html>
