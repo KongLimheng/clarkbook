@@ -6,6 +6,7 @@ import templateCertificate from './templates/certificate.html?raw';
 import templateMenu from './templates/menu.html?raw';
 import templateProposal from './templates/proposal.html?raw';
 import templateAnnouncement from './templates/announcement.html?raw';
+import templateGradient from './templates/gradient.html?raw';
 
 export const TEMPLATES = [
 	{ id: "default", label: "Default", html: templateDefault },
@@ -14,6 +15,7 @@ export const TEMPLATES = [
 	{ id: "report", label: "Report", html: templateReport },
 	{ id: "certificate", label: "Certificate", html: templateCertificate },
 	{ id: "menu", label: "Menu", html: templateMenu },
+	{ id: "gradient", label: "Gradient", html: templateGradient },
 	{ id: "proposal", label: "Proposal (4 pages)", html: templateProposal },
 	{ id: "announcement", label: "សេចក្ដីជូនដំណឹង (2 pages)", html: templateAnnouncement },
 ];
