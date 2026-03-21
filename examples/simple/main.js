@@ -21,6 +21,7 @@ const html = `<!DOCTYPE html>
 </style>
 </head>
 <body>
+  <img src="/image.jpg" width=200 height=200>
   <h1>Hello from PlutoBook WASM</h1>
   <p>This PDF was rendered entirely by <strong>PlutoBook</strong> running as
      WebAssembly in Node.js — no headless browser required.</p>
@@ -35,6 +36,13 @@ const html = `<!DOCTYPE html>
 </body>
 </html>`;
 
-await fs.writeFile("out.pdf", book.pdf(html));
-await fs.writeFile("out.png", book.image(html));
-await fs.writeFile("out.jpg", book.image(html, { format: "jpg" }));
+const cfg = {
+	resources: {
+		"https://example.com/image.jpg": await fs.readFile("image.jpg"),
+	},
+	baseUrl: "https://example.com",
+};
+
+await fs.writeFile("out.pdf", book.pdf(html, cfg));
+await fs.writeFile("out.png", book.image(html, cfg));
+await fs.writeFile("out.jpg", book.image(html, { format: "jpg", ...cfg }));

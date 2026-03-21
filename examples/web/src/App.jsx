@@ -11,6 +11,7 @@ import { html as htmlLang } from "@codemirror/lang-html";
 import { oneDark } from "@codemirror/theme-one-dark";
 import clsx from "clsx";
 import PdfPreview from "./PdfPreview.jsx";
+import logoUrl from "../public/plutoprint.jpg?url";
 
 const DEFAULT_HTML = `<!DOCTYPE html>
 <html>
@@ -44,7 +45,8 @@ const DEFAULT_HTML = `<!DOCTYPE html>
     }
     .badge {
       display: inline-block;
-      background: #000;
+      background: slateblue;
+			border-radius: 6px;
       color: #fff;
       font-size: 11px;
       font-family: monospace;
@@ -61,9 +63,17 @@ const DEFAULT_HTML = `<!DOCTYPE html>
     .khmer {
       font-family: 'Google Sans', sans-serif;
     }
+		
+    small {
+      color: gray;
+    }
   </style>
 </head>
 <body>
+	<img src="/plutoprint.jpg" width=100 height=100 />
+	<br/>
+	<small><strong>Note:</strong> The image has to be registered in the resouces first.</small>
+	<br/>
   <span class="badge">ClarkBook</span>
   <h1>Hello, World</h1>
   <p>Edit this HTML on the left and see the live preview update in real time. When you're ready, export to PDF or image.</p>
@@ -126,14 +136,31 @@ export default function App() {
 	const [imgWidth, setImgWidth] = useState(1200);
 	const [imgHeight, setImgHeight] = useState(800);
 	const [status, setStatus] = useState("loading");
-	const [dark, setDark] = useState(() => localStorage.getItem("theme") !== "light");
+	const [dark, setDark] = useState(
+		() => localStorage.getItem("theme") !== "light",
+	);
+
 	const [previewUrl, setPreviewUrl] = useState(null);
 	const [bookReady, setBookReady] = useState(false);
 	const [renderMs, setRenderMs] = useState(null);
+	const [exportOptions, setExportOptions] = useState({});
 
 	const bookRef = useRef(null);
 	const debounceRef = useRef(null);
 	const previewUrlRef = useRef(null);
+
+	useEffect(() => {
+		fetch(logoUrl)
+			.then((res) => res.arrayBuffer())
+			.then((buffer) => {
+				setExportOptions({
+					baseUrl: "https://example.com",
+					resources: {
+						"https://example.com/plutoprint.jpg": new Uint8Array(buffer),
+					},
+				});
+			});
+	}, []);
 
 	useEffect(() => {
 		fetch("/GoogleSans-VariableFont_GRAD,opsz,wght.ttf")
@@ -169,6 +196,7 @@ export default function App() {
 					bytes = bookRef.current.pdf(html, {
 						pageSize: PageSize[pageSize],
 						margins: Margins[margins],
+						...exportOptions,
 					});
 					mime = "application/pdf";
 				} else {
@@ -176,6 +204,7 @@ export default function App() {
 						format,
 						width: imgWidth,
 						height: imgHeight,
+						...exportOptions,
 					});
 					mime = `image/${format}`;
 				}
@@ -188,9 +217,18 @@ export default function App() {
 			} catch (err) {
 				console.error(err);
 			}
-		}, 10);
+		}, 1);
 		return () => clearTimeout(debounceRef.current);
-	}, [html, format, pageSize, margins, imgWidth, imgHeight, bookReady]);
+	}, [
+		html,
+		format,
+		pageSize,
+		margins,
+		imgWidth,
+		imgHeight,
+		bookReady,
+		exportOptions,
+	]);
 
 	async function handleExport() {
 		if (!bookRef.current || status === "exporting") return;
@@ -203,6 +241,7 @@ export default function App() {
 				bytes = bookRef.current.pdf(html, {
 					pageSize: PageSize[pageSize],
 					margins: Margins[margins],
+					...exportOptions,
 				});
 				mime = "application/pdf";
 				ext = "pdf";
@@ -211,6 +250,7 @@ export default function App() {
 					format,
 					width: imgWidth,
 					height: imgHeight,
+					...exportOptions,
 				});
 				mime = `image/${format}`;
 				ext = format;
@@ -238,6 +278,22 @@ export default function App() {
 				dark && "dark",
 			)}
 		>
+			{status === "loading" && (
+				<div className="absolute inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-white dark:bg-black">
+					<div className="flex gap-1">
+						{[0, 1, 2].map((i) => (
+							<span
+								key={i}
+								className="w-1 h-1 bg-black dark:bg-white animate-bounce"
+								style={{ animationDelay: `${i * 0.15}s` }}
+							/>
+						))}
+					</div>
+					<span className="text-[11px] font-mono text-[#aaa] dark:text-[#555]">
+						Loading WASM...
+					</span>
+				</div>
+			)}
 			{/* Header */}
 			<header className="flex items-center justify-between px-4 h-12 border-b border-[#e5e5e5] dark:border-[#1a1a1a] shrink-0 bg-white dark:bg-black">
 				<div className="flex items-center gap-3">
@@ -251,11 +307,13 @@ export default function App() {
 				<div className="flex items-center gap-2">
 					<button
 						type="button"
-						onClick={() => setDark((d) => {
-							const next = !d;
-							localStorage.setItem("theme", next ? "dark" : "light");
-							return next;
-						})}
+						onClick={() =>
+							setDark((d) => {
+								const next = !d;
+								localStorage.setItem("theme", next ? "dark" : "light");
+								return next;
+							})
+						}
 						className="text-[#aaa] dark:text-[#555] hover:text-black dark:hover:text-white transition-colors p-1"
 					>
 						{dark ? <Sun size={15} /> : <Moon size={15} />}
