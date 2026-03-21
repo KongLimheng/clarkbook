@@ -56,7 +56,7 @@ export default function PdfPreview({ url }) {
   }, [url]);
 
   return (
-    <div className="w-full h-full overflow-auto bg-[#f0f0f0] p-4">
+    <div className="w-full h-full overflow-auto bg-[#f0f0f0] dark:bg-[#1a1a1a] p-4">
       <div ref={containerRef} />
     </div>
   );
