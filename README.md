@@ -1,3 +1,5 @@
+<img src="./cover.png">
+
 # ClarkBook
 
 HTML to PDF and image using WebAssembly, powered by [plutobook](https://github.com/plutoprint/plutobook) — a robust HTML rendering library for paged media. Does not depend on Chromium, WebKit, or Gecko.
