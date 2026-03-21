@@ -224,6 +224,11 @@ export default function App() {
 			let bytes;
 			let mime;
 			let ext;
+			const remoteResources = await fetchRemoteResources(html);
+			const opts = {
+				...exportOptions,
+				resources: { ...exportOptions.resources, ...remoteResources },
+			};
 			const resolvedPageSize =
 				orientation === "landscape"
 					? landscape(PageSize[pageSize])
@@ -232,7 +237,7 @@ export default function App() {
 				bytes = bookRef.current.pdf(html, {
 					pageSize: resolvedPageSize,
 					margins: Margins[margins],
-					...exportOptions,
+					...opts,
 				});
 				mime = "application/pdf";
 				ext = "pdf";
@@ -241,7 +246,7 @@ export default function App() {
 					format,
 					width: imgWidth,
 					height: imgHeight,
-					...exportOptions,
+					...opts,
 				});
 				mime = `image/${format}`;
 				ext = format;
