@@ -2,142 +2,90 @@
 <html>
 <head>
 <style>
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 20px;
-  background: #f0f0f0;
+body { font-family: sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+h2 { font-size: 13px; margin: 16px 0 8px; color: #555; text-transform: uppercase; letter-spacing: 0.05em; }
+.grid { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.label { font-size: 11px; color: #666; margin-top: 4px; width: 220px; }
+
+/* Multiple background layers */
+.multi1 {
+  width: 220px; height: 120px;
+  background:
+    linear-gradient(to right, rgba(231,76,60,0.8), rgba(231,76,60,0)),
+    linear-gradient(to bottom, rgba(52,152,219,0.8), rgba(52,152,219,0)),
+    #2c3e50;
 }
-h1 {
-  font-size: 20px;
-  margin: 0 0 16px;
-  color: #333;
+.multi2 {
+  width: 220px; height: 120px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4) 0%, transparent 50%),
+    linear-gradient(135deg, #667eea, #764ba2);
 }
-h2 {
-  font-size: 13px;
-  margin: 16px 0 8px;
-  color: #555;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.multi3 {
+  width: 220px; height: 120px;
+  background:
+    linear-gradient(to right, rgba(255,255,255,0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.15) 1px, transparent 1px),
+    #1a1a2e;
+  background-size: auto, auto, auto;
 }
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 20px;
+.multi4 {
+  width: 220px; height: 120px;
+  background:
+    radial-gradient(ellipse at top left, rgba(255,200,0,0.6) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(255,50,50,0.6) 0%, transparent 60%),
+    #1a252f;
 }
-.box {
-  width: 180px;
-  height: 100px;
-  border-radius: 4px;
+.multi5 {
+  width: 220px; height: 120px;
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px),
+    linear-gradient(to right, #e74c3c, #9b59b6);
 }
-.label {
-  font-size: 11px;
-  color: #666;
-  margin-top: 4px;
-  width: 180px;
+.multi6 {
+  width: 220px; height: 120px;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%),
+    linear-gradient(to right, #2ecc71, #3498db);
 }
 
-/* Linear gradients */
-.lg-to-right   { background: linear-gradient(to right, #e74c3c, #3498db); }
-.lg-to-bottom  { background: linear-gradient(to bottom, #2ecc71, #9b59b6); }
-.lg-45deg      { background: linear-gradient(45deg, #f39c12, #e74c3c); }
-.lg-135deg     { background: linear-gradient(135deg, #1abc9c, #3498db); }
-.lg-multicolor { background: linear-gradient(to right, #e74c3c, #f39c12, #2ecc71, #3498db, #9b59b6); }
-.lg-transparent { background: linear-gradient(to right, rgba(231,76,60,1), rgba(231,76,60,0)); }
-.lg-stops      { background: linear-gradient(to right, #e74c3c 20%, #f39c12 50%, #3498db 80%); }
-.lg-to-topleft { background: linear-gradient(to top left, #e74c3c, #3498db); }
-
-/* Radial gradients */
-.rg-center     { background: radial-gradient(circle, #f39c12, #e74c3c); }
-.rg-ellipse    { background: radial-gradient(ellipse, #2ecc71, #2c3e50); }
-.rg-at-top     { background: radial-gradient(circle at top, #3498db, #1a252f); }
-.rg-at-corner  { background: radial-gradient(circle at 20% 20%, #9b59b6, #2c3e50); }
-.rg-multicolor { background: radial-gradient(circle, #fff 0%, #f39c12 40%, #e74c3c 100%); }
-.rg-transparent { background: radial-gradient(circle, rgba(52,152,219,1) 0%, rgba(52,152,219,0) 70%); }
-
-/* Repeating gradients */
-.rep-linear { background: repeating-linear-gradient(45deg, #e74c3c, #e74c3c 10px, #fff 10px, #fff 20px); }
-.rep-radial { background: repeating-radial-gradient(circle, #3498db, #3498db 8px, #fff 8px, #fff 16px); }
+/* aspect-ratio */
+.ar-container { width: 200px; background: #3498db; }
+.ar-16-9 { aspect-ratio: 16/9; background: linear-gradient(135deg, #e74c3c, #f39c12); }
+.ar-1-1  { aspect-ratio: 1/1;  background: linear-gradient(135deg, #2ecc71, #1abc9c); }
+.ar-4-3  { aspect-ratio: 4/3;  background: linear-gradient(135deg, #9b59b6, #3498db); }
+.ar-2    { aspect-ratio: 2;    background: linear-gradient(135deg, #e74c3c, #9b59b6); }
 </style>
 </head>
 <body>
 
-<h1>CSS Gradient Examples</h1>
-
-<h2>Linear Gradients</h2>
+<h2>Multiple Background Layers</h2>
 <div class="grid">
-  <div>
-    <div class="box lg-to-right"></div>
-    <div class="label">to right</div>
-  </div>
-  <div>
-    <div class="box lg-to-bottom"></div>
-    <div class="label">to bottom</div>
-  </div>
-  <div>
-    <div class="box lg-45deg"></div>
-    <div class="label">45deg</div>
-  </div>
-  <div>
-    <div class="box lg-135deg"></div>
-    <div class="label">135deg</div>
-  </div>
-  <div>
-    <div class="box lg-multicolor"></div>
-    <div class="label">multicolor</div>
-  </div>
-  <div>
-    <div class="box lg-transparent"></div>
-    <div class="label">transparent fade</div>
-  </div>
-  <div>
-    <div class="box lg-stops"></div>
-    <div class="label">explicit stops</div>
-  </div>
-  <div>
-    <div class="box lg-to-topleft"></div>
-    <div class="label">to top left</div>
-  </div>
+  <div><div class="multi1"></div><div class="label">2 linear gradients + color</div></div>
+  <div><div class="multi2"></div><div class="label">radial highlight + linear base</div></div>
+  <div><div class="multi3"></div><div class="label">grid lines + color</div></div>
+  <div><div class="multi4"></div><div class="label">dual radial glows + dark bg</div></div>
+  <div><div class="multi5"></div><div class="label">stripes over gradient</div></div>
+  <div><div class="multi6"></div><div class="label">fade overlay + gradient</div></div>
 </div>
 
-<h2>Radial Gradients</h2>
+<h2>CSS aspect-ratio</h2>
 <div class="grid">
   <div>
-    <div class="box rg-center"></div>
-    <div class="label">circle center</div>
+    <div class="ar-container"><div class="ar-16-9"></div></div>
+    <div class="label">16/9 (widescreen)</div>
   </div>
   <div>
-    <div class="box rg-ellipse"></div>
-    <div class="label">ellipse</div>
+    <div class="ar-container"><div class="ar-1-1"></div></div>
+    <div class="label">1/1 (square)</div>
   </div>
   <div>
-    <div class="box rg-at-top"></div>
-    <div class="label">circle at top</div>
+    <div class="ar-container"><div class="ar-4-3"></div></div>
+    <div class="label">4/3 (classic)</div>
   </div>
   <div>
-    <div class="box rg-at-corner"></div>
-    <div class="label">circle at 20% 20%</div>
-  </div>
-  <div>
-    <div class="box rg-multicolor"></div>
-    <div class="label">multicolor</div>
-  </div>
-  <div>
-    <div class="box rg-transparent"></div>
-    <div class="label">transparent edge</div>
-  </div>
-</div>
-
-<h2>Repeating Gradients</h2>
-<div class="grid">
-  <div>
-    <div class="box rep-linear"></div>
-    <div class="label">repeating-linear</div>
-  </div>
-  <div>
-    <div class="box rep-radial"></div>
-    <div class="label">repeating-radial</div>
+    <div class="ar-container"><div class="ar-2"></div></div>
+    <div class="label">2 (shorthand = 2/1)</div>
   </div>
 </div>
 
