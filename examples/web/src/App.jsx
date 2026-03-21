@@ -8,7 +8,8 @@ import {
 } from "react-resizable-panels";
 import CodeMirror from "@uiw/react-codemirror";
 import { html as htmlLang } from "@codemirror/lang-html";
-import { oneDark } from "@codemirror/theme-one-dark";
+import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
+import { EditorView } from "@codemirror/view";
 import clsx from "clsx";
 import PdfPreview from "./PdfPreview.jsx";
 import logoUrl from "../public/plutoprint.jpg?url";
@@ -1662,6 +1663,12 @@ const TEMPLATES = [
   { id: "proposal", label: "Proposal (4 pages)", html: TEMPLATE_PROPOSAL },
 ];
 
+const geistMonoTheme = EditorView.theme({
+	"&": { fontFamily: "'Geist Mono', ui-monospace, monospace" },
+	".cm-content": { fontFamily: "'Geist Mono', ui-monospace, monospace" },
+	".cm-gutters": { fontFamily: "'Geist Mono', ui-monospace, monospace" },
+});
+
 const PAGE_SIZES = ["A3", "A4", "A5", "B4", "B5", "Letter", "Legal", "Ledger"];
 const MARGIN_TYPES = ["None", "Narrow", "Normal", "Moderate", "Wide"];
 const FORMATS = [
@@ -1987,8 +1994,8 @@ export default function App() {
 							value={html}
 							onChange={setHtml}
 							height="100%"
-							extensions={[htmlLang()]}
-							theme={dark ? oneDark : "light"}
+							extensions={[htmlLang(), geistMonoTheme]}
+							theme={dark ? githubDark : githubLight}
 							basicSetup={{ tabSize: 2, foldGutter: false }}
 							style={{
 								fontFamily: "'Geist Mono', ui-monospace, monospace",
