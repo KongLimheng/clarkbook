@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useQueryStates, parseAsStringLiteral, parseAsInteger } from "nuqs";
 import { createBook, PageSize, Margins } from "clarkbook";
 import { Download, Github, ChevronDown, Sun, Moon } from "lucide-react";
 import {
@@ -1658,6 +1659,360 @@ const TEMPLATE_PROPOSAL = `<!DOCTYPE html>
 </body>
 </html>`;
 
+const TEMPLATE_ANNOUNCEMENT = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Google Sans', sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    /* ── Page layout ── */
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 56px 64px;
+      page-break-after: always;
+      break-after: page;
+    }
+    .page:last-child { page-break-after: auto; break-after: auto; }
+
+    /* ── Page 1 – Cover ── */
+    .cover {
+      background: #0d3b6e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cover-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 48px;
+    }
+    .gov-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.5;
+    }
+    .gov-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 4px;
+    }
+    .seal {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      color: rgba(255,255,255,0.6);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .cover-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+    .ann-type {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #f5c842;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .ann-title {
+      font-size: 36px;
+      font-weight: 700;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 24px;
+      max-width: 560px;
+    }
+    .ann-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    .cover-divider {
+      width: 52px;
+      height: 3px;
+      background: #f5c842;
+      margin: 28px 0;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 36px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      margin-top: 48px;
+    }
+    .cover-ref {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.8;
+    }
+    .cover-date {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-align: right;
+    }
+
+    /* ── Page 2 – Body ── */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #0d3b6e;
+      margin-bottom: 36px;
+    }
+    .page-header-org {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0d3b6e;
+    }
+    .page-header-ref {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0d3b6e;
+      margin: 28px 0 10px;
+      padding-left: 12px;
+      border-left: 3px solid #f5c842;
+    }
+
+    p {
+      color: #374151;
+      margin-bottom: 14px;
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .highlight-box {
+      background: #fffbeb;
+      border: 1px solid #f5c842;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 20px 0;
+      font-size: 13px;
+      color: #78350f;
+      line-height: 1.7;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 20px 0 28px;
+    }
+    .info-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 16px 18px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .info-card-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .info-card-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .info-card-sub {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    ol {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+    ol li {
+      color: #374151;
+      margin-bottom: 8px;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .signature-block {
+      margin-top: 48px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .sig-inner {
+      text-align: center;
+      min-width: 200px;
+    }
+    .sig-line {
+      border-top: 1.5px solid #334155;
+      margin-bottom: 8px;
+    }
+    .sig-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .sig-title {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .page-footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ════ PAGE 1 – COVER ════ -->
+  <div class="page cover">
+    <div class="cover-top">
+      <div>
+        <div class="gov-name">ក្រសួងសុខាភិបាល<br>នៃព្រះរាជាណាចក្រកម្ពុជា</div>
+        <div class="gov-sub">Ministry of Health · Kingdom of Cambodia</div>
+      </div>
+      <div class="seal">ត្រា<br>រាជ<br>ការ</div>
+    </div>
+
+    <div class="cover-body">
+      <div class="ann-type">សេចក្ដីជូនដំណឹងសាធារណៈ</div>
+      <div class="ann-title">យុទ្ធនាការចាក់វ៉ាក់សាំងការពារជំងឺគ្រុនចាញ់<br>ទូទាំងប្រទេស ឆ្នាំ ២០២៦</div>
+      <div class="cover-divider"></div>
+      <div class="ann-desc">
+        ក្រសួងសុខាភិបាលសូមជូនដំណឹងដល់ប្រជាពលរដ្ឋទូទៅ អំពីការចាប់ផ្ដើម
+        យុទ្ធនាការចាក់វ៉ាក់សាំងជាតិ ដែលនឹងធ្វើឡើងនៅទូទាំង ២៥ ខេត្ត-រាជធានី
+        ក្នុងចន្លោះពេលខែមេសា ដល់ ខែមិថុនា ឆ្នាំ ២០២៦។
+      </div>
+    </div>
+
+    <div class="cover-footer">
+      <div class="cover-ref">
+        លេខសំអាង៖ ០០៤/២០២៦/ក.ស.ភ<br>
+        កាលបរិច្ឆេទចេញ៖ ២១ មីនា ២០២៦<br>
+        ចំណាត់ថ្នាក់៖ សាធារណៈ
+      </div>
+      <div class="cover-date">
+        ភ្នំពេញ<br>
+        ២០២៦
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ PAGE 2 – BODY ════ -->
+  <div class="page">
+    <div class="page-header">
+      <div class="page-header-org">ក្រសួងសុខាភិបាល — សេចក្ដីជូនដំណឹង</div>
+      <div class="page-header-ref">លេខ ០០៤/២០២៦/ក.ស.ភ</div>
+    </div>
+
+    <h2>១. គោលបំណង</h2>
+    <p>
+      ក្រសួងសុខាភិបាល បានរៀបចំយុទ្ធនាការចាក់វ៉ាក់សាំងការពារជំងឺគ្រុនចាញ់ ស្របតាម
+      គោលនយោបាយសុខាភិបាលជាតិ ក្នុងគោលបំណងកាត់បន្ថយអត្រាឆ្លងរោគ និងការពារ
+      ជីវិតប្រជាពលរដ្ឋ ជាពិសេសសម្រាប់កុមារអាយុក្រោម ១២ ឆ្នាំ មាតា និងស្ត្រីមានផ្ទៃពោះ
+      ក៏ដូចជាប្រជាពលរដ្ឋដែលរស់នៅក្នុងតំបន់ប្រឈមមុខបំផុត។
+    </p>
+
+    <div class="highlight-box">
+      ⚠️ <strong>ចំណាំសំខាន់</strong>៖ ការចាក់វ៉ាក់សាំងនេះគឺឥតគិតថ្លៃ និងស្ម័គ្រចិត្ត។
+      ប្រជាពលរដ្ឋគ្រប់រូបត្រូវបានលើកទឹកចិត្ត ឱ្យចូលរួមតាមកន្លែងចាក់ដែលនៅជិតលំនៅដ្ឋានរបស់ខ្លួន។
+    </div>
+
+    <h2>២. ព័ត៌មានសំខាន់</h2>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-label">រយៈពេល</div>
+        <div class="info-card-value">មេសា – មិថុនា ២០២៦</div>
+        <div class="info-card-sub">ចំនួន ១២ សប្ដាហ៍</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">ចំនួនខេត្ត-រាជធានី</div>
+        <div class="info-card-value">២៥ ខេត្ត-រាជធានី</div>
+        <div class="info-card-sub">ទូទាំងប្រទេសកម្ពុជា</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">ក្រុមគោលដៅ</div>
+        <div class="info-card-value">ប្រជាពលរដ្ឋគ្រប់វ័យ</div>
+        <div class="info-card-sub">ផ្ដោតលើកុមារ និងស្ត្រីមានផ្ទៃពោះ</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-label">ចំណាយ</div>
+        <div class="info-card-value">ឥតគិតថ្លៃ</div>
+        <div class="info-card-sub">ឧបត្ថម្ភដោយរដ្ឋ</div>
+      </div>
+    </div>
+
+    <h2>៣. ការណែនាំដល់ប្រជាពលរដ្ឋ</h2>
+    <ol>
+      <li>សូមចូលទៅកាន់មណ្ឌលសុខភាពឃុំ-សង្កាត់ ដែលនៅជិតលំនៅដ្ឋានរបស់លោក-អ្នក ក្នុងរយៈពេលដែលបានកំណត់។</li>
+      <li>នាំយករូបថ្ត ឬអត្តសញ្ញាណប័ណ្ណ ហើយមកជាមួយក្នុងស្ថានភាពមានសុខភាពល្អ (មិនមានជំងឺគ្រុនក្ដៅ)។</li>
+      <li>ក្រោយចាក់ ត្រូវស្នាក់នៅតាមដានរយៈ ៣០ នាទី ដើម្បីត្រួតពិនិត្យសុខភាព។</li>
+      <li>សម្រាប់ព័ត៌មានបន្ថែម ទូរស័ព្ទមកលេខ <strong>១១៥</strong> (ឥតគិតថ្លៃ) ឬតាមរយៈកម្មវិធី <strong>MyHealth KH</strong>។</li>
+    </ol>
+
+    <p>
+      ក្រសួងសុខាភិបាល សូមថ្លែងអំណរគុណចំពោះប្រជាពលរដ្ឋទូទៅ ដែលបានផ្ដោតការយកចិត្ត
+      ទុកដាក់លើសុខភាពខ្លួន និងជួយពង្រឹងការការពារសុខភាពសាធារណៈ ដើម្បីជំរុញដំណើរការ
+      អភិវឌ្ឍប្រទេសជាតិយ៉ាងប្រកបដោយចីរភាព។
+    </p>
+
+    <div class="signature-block">
+      <div class="sig-inner">
+        <div class="sig-line"></div>
+        <div class="sig-name">វេជ្ជបណ្ឌិត ចាន់ រតនា</div>
+        <div class="sig-title">រដ្ឋលេខាធិការ ក្រសួងសុខាភិបាល</div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>ក្រសួងសុខាភិបាល · ភ្នំពេញ · www.moh.gov.kh</span>
+      <span>ទំព័រ ២/២</span>
+    </div>
+  </div>
+
+</body>
+</html>`;
+
 const TEMPLATES = [
 	{ id: "default", label: "Default", html: TEMPLATE_DEFAULT },
 	{ id: "invoice", label: "Invoice", html: TEMPLATE_INVOICE },
@@ -1666,6 +2021,7 @@ const TEMPLATES = [
 	{ id: "certificate", label: "Certificate", html: TEMPLATE_CERTIFICATE },
 	{ id: "menu", label: "Menu", html: TEMPLATE_MENU },
 	{ id: "proposal", label: "Proposal (4 pages)", html: TEMPLATE_PROPOSAL },
+	{ id: "announcement", label: "សេចក្ដីជូនដំណឹង (2 pages)", html: TEMPLATE_ANNOUNCEMENT },
 ];
 
 const geistMonoTheme = EditorView.theme({
@@ -1718,14 +2074,28 @@ function NumberInput({ value, onChange, placeholder }) {
 }
 
 export default function App() {
-	const [templateId, setTemplateId] = useState("default");
-	const [html, setHtml] = useState(TEMPLATES[0].html);
-	const [format, setFormat] = useState("pdf");
-	const [pageSize, setPageSize] = useState("A4");
-	const [orientation, setOrientation] = useState("portrait");
-	const [margins, setMargins] = useState("None");
-	const [imgWidth, setImgWidth] = useState(1200);
-	const [imgHeight, setImgHeight] = useState(800);
+	const [{ templateId, format, pageSize, orientation, margins, imgWidth, imgHeight }, setUrlState] =
+		useQueryStates({
+			templateId: parseAsStringLiteral(TEMPLATES.map((t) => t.id)).withDefault("default"),
+			format: parseAsStringLiteral(["pdf", "png", "jpeg", "webp"]).withDefault("pdf"),
+			pageSize: parseAsStringLiteral(PAGE_SIZES).withDefault("A4"),
+			orientation: parseAsStringLiteral(["portrait", "landscape"]).withDefault("portrait"),
+			margins: parseAsStringLiteral(MARGIN_TYPES).withDefault("None"),
+			imgWidth: parseAsInteger.withDefault(1200),
+			imgHeight: parseAsInteger.withDefault(800),
+		});
+
+	const setTemplateId = (id) => setUrlState({ templateId: id });
+	const setFormat = (v) => setUrlState({ format: v });
+	const setPageSize = (v) => setUrlState({ pageSize: v });
+	const setOrientation = (v) => setUrlState({ orientation: v });
+	const setMargins = (v) => setUrlState({ margins: v });
+	const setImgWidth = (v) => setUrlState({ imgWidth: v });
+	const setImgHeight = (v) => setUrlState({ imgHeight: v });
+
+	const [html, setHtml] = useState(
+		() => TEMPLATES.find((t) => t.id === templateId)?.html ?? TEMPLATES[0].html,
+	);
 	const [status, setStatus] = useState("loading");
 	const [dark, setDark] = useState(
 		() => localStorage.getItem("theme") !== "light",
