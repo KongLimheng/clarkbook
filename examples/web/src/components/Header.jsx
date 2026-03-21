@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Sun, Moon, Github } from "lucide-react";
 
-export function Header({ dark, onToggleDark }) {
+export const Header = memo(function Header({ dark, onToggleDark }) {
 	return (
 		<header className="flex items-center justify-between px-4 h-12 border-b border-[#e5e5e5] dark:border-[#1a1a1a] shrink-0 bg-white dark:bg-black">
 			<div className="flex items-center gap-3">
@@ -28,4 +29,4 @@ export function Header({ dark, onToggleDark }) {
 			</div>
 		</header>
 	);
-}
+});

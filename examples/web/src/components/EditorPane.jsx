@@ -1,3 +1,4 @@
+import { memo } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { html as htmlLang } from "@codemirror/lang-html";
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
@@ -9,7 +10,9 @@ const geistMonoTheme = EditorView.theme({
 	".cm-gutters": { fontFamily: "'Geist Mono', ui-monospace, monospace" },
 });
 
-export function EditorPane({ html, onChange, dark }) {
+const extensions = [htmlLang(), geistMonoTheme];
+
+export const EditorPane = memo(function EditorPane({ html, onChange, dark }) {
 	return (
 		<div className="flex flex-col overflow-hidden h-full">
 			<div className="text-[10px] text-[#bbb] dark:text-[#3a3a3a] px-3 py-1.5 border-b border-[#f0f0f0] dark:border-[#111] font-mono uppercase tracking-widest shrink-0 bg-white dark:bg-black">
@@ -20,7 +23,7 @@ export function EditorPane({ html, onChange, dark }) {
 					value={html}
 					onChange={onChange}
 					height="100%"
-					extensions={[htmlLang(), geistMonoTheme]}
+					extensions={extensions}
 					theme={dark ? githubDark : githubLight}
 					basicSetup={{ tabSize: 2, foldGutter: false }}
 					style={{
@@ -32,4 +35,4 @@ export function EditorPane({ html, onChange, dark }) {
 			</div>
 		</div>
 	);
-}
+});

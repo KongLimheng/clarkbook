@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useQueryStates, parseAsStringLiteral, parseAsInteger } from "nuqs";
 import { createBook, PageSize, Margins } from "clarkbook";
 import { Panel, Group as PanelGroup, Separator as PanelResizeHandle } from "react-resizable-panels";
@@ -89,7 +89,8 @@ export default function App() {
 				const t0 = performance.now();
 				const resolvedPageSize =
 					orientation === "landscape" ? landscape(PageSize[pageSize]) : PageSize[pageSize];
-				let bytes, mime;
+				let bytes;
+				let mime;
 				if (format === "pdf") {
 					bytes = bookRef.current.pdf(html, { pageSize: resolvedPageSize, margins: Margins[margins], ...opts });
 					mime = "application/pdf";
@@ -110,7 +111,7 @@ export default function App() {
 		return () => clearTimeout(debounceRef.current);
 	}, [html, format, pageSize, orientation, margins, imgWidth, imgHeight, bookReady, exportOptions]);
 
-	async function handleExport() {
+	const handleExport = useCallback(async () => {
 		if (!bookRef.current || status === "exporting") return;
 		setStatus("exporting");
 		try {
@@ -121,7 +122,9 @@ export default function App() {
 			};
 			const resolvedPageSize =
 				orientation === "landscape" ? landscape(PageSize[pageSize]) : PageSize[pageSize];
-			let bytes, mime, ext;
+			let bytes;
+			let mime;
+			let ext;
 			if (format === "pdf") {
 				bytes = bookRef.current.pdf(html, { pageSize: resolvedPageSize, margins: Margins[margins], ...opts });
 				mime = "application/pdf";
@@ -143,7 +146,30 @@ export default function App() {
 			console.error(err);
 			setStatus("error");
 		}
-	}
+	}, [html, format, pageSize, orientation, margins, imgWidth, imgHeight, exportOptions, status]);
+
+	const handleToggleDark = useCallback(() => {
+		setDark((d) => {
+			const next = !d;
+			localStorage.setItem("theme", next ? "dark" : "light");
+			return next;
+		});
+	}, []);
+
+	const handleTemplateChange = useCallback((id) => {
+		const t = TEMPLATES.find((t) => t.id === id);
+		if (t) { setUrlState({ templateId: id }); setHtml(t.html); }
+	}, [setUrlState]);
+
+	const handleFormatChange = useCallback((v) =>
+		setUrlState({ format: v, ...(v !== "pdf" ? { imgWidth: 1200, imgHeight: 0 } : {}) }),
+	[setUrlState]);
+
+	const handlePageSizeChange = useCallback((v) => setUrlState({ pageSize: v }), [setUrlState]);
+	const handleOrientationChange = useCallback((v) => setUrlState({ orientation: v }), [setUrlState]);
+	const handleMarginsChange = useCallback((v) => setUrlState({ margins: v }), [setUrlState]);
+	const handleImgWidthChange = useCallback((v) => setUrlState({ imgWidth: v }), [setUrlState]);
+	const handleImgHeightChange = useCallback((v) => setUrlState({ imgHeight: v }), [setUrlState]);
 
 	return (
 		<div
@@ -167,16 +193,7 @@ export default function App() {
 				</div>
 			)}
 
-			<Header
-				dark={dark}
-				onToggleDark={() =>
-					setDark((d) => {
-						const next = !d;
-						localStorage.setItem("theme", next ? "dark" : "light");
-						return next;
-					})
-				}
-			/>
+			<Header dark={dark} onToggleDark={handleToggleDark} />
 
 			<Toolbar
 				templateId={templateId}
@@ -187,18 +204,13 @@ export default function App() {
 				imgWidth={imgWidth}
 				imgHeight={imgHeight}
 				status={status}
-				onTemplateChange={(id) => {
-					const t = TEMPLATES.find((t) => t.id === id);
-					if (t) { setUrlState({ templateId: id }); setHtml(t.html); }
-				}}
-				onFormatChange={(v) =>
-					setUrlState({ format: v, ...(v !== "pdf" ? { imgWidth: 1200, imgHeight: 0 } : {}) })
-				}
-				onPageSizeChange={(v) => setUrlState({ pageSize: v })}
-				onOrientationChange={(v) => setUrlState({ orientation: v })}
-				onMarginsChange={(v) => setUrlState({ margins: v })}
-				onImgWidthChange={(v) => setUrlState({ imgWidth: v })}
-				onImgHeightChange={(v) => setUrlState({ imgHeight: v })}
+				onTemplateChange={handleTemplateChange}
+				onFormatChange={handleFormatChange}
+				onPageSizeChange={handlePageSizeChange}
+				onOrientationChange={handleOrientationChange}
+				onMarginsChange={handleMarginsChange}
+				onImgWidthChange={handleImgWidthChange}
+				onImgHeightChange={handleImgHeightChange}
 				onExport={handleExport}
 			/>
 

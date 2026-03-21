@@ -1,4 +1,6 @@
-export function StatusBar({ html, format, imgWidth, imgHeight, pageSize, orientation, margins, renderMs, status }) {
+import { memo } from "react";
+
+export const StatusBar = memo(function StatusBar({ html, format, imgWidth, imgHeight, pageSize, orientation, margins, renderMs, status }) {
 	return (
 		<div className="flex items-center gap-3 px-3 h-6 border-t border-[#e5e5e5] dark:border-[#1a1a1a] text-[10px] text-[#bbb] dark:text-[#3a3a3a] font-mono shrink-0 bg-white dark:bg-black">
 			<span>{html.length.toLocaleString()} chars</span>
@@ -27,4 +29,4 @@ export function StatusBar({ html, format, imgWidth, imgHeight, pageSize, orienta
 			</span>
 		</div>
 	);
-}
+});

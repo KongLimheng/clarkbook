@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { ChevronDown } from "lucide-react";
 
-export function Select({ value, onChange, options }) {
+export const Select = memo(function Select({ value, onChange, options }) {
 	return (
 		<div className="relative flex items-center">
 			<select
@@ -20,9 +21,9 @@ export function Select({ value, onChange, options }) {
 			/>
 		</div>
 	);
-}
+});
 
-export function NumberInput({ value, onChange, placeholder }) {
+export const NumberInput = memo(function NumberInput({ value, onChange, placeholder }) {
 	return (
 		<input
 			type="number"
@@ -32,4 +33,4 @@ export function NumberInput({ value, onChange, placeholder }) {
 			className="bg-[#f5f5f5] dark:bg-[#0a0a0a] border border-[#e0e0e0] dark:border-[#2a2a2a] text-[#333] dark:text-[#ccc] text-xs px-2 h-7 w-20 outline-none focus:border-[#aaa] dark:focus:border-[#555]"
 		/>
 	);
-}
+});

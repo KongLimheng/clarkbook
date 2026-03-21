@@ -1,9 +1,10 @@
+import { memo } from "react";
 import { Download } from "lucide-react";
 import clsx from "clsx";
 import { Select, NumberInput } from "./Select.jsx";
 import { TEMPLATES, FORMATS, PAGE_SIZES, MARGIN_TYPES } from "../constants.js";
 
-export function Toolbar({
+export const Toolbar = memo(function Toolbar({
 	templateId, format, pageSize, orientation, margins, imgWidth, imgHeight,
 	status, onTemplateChange, onFormatChange, onPageSizeChange, onOrientationChange,
 	onMarginsChange, onImgWidthChange, onImgHeightChange, onExport,
@@ -18,11 +19,7 @@ export function Toolbar({
 				options={TEMPLATES.map((t) => ({ value: t.id, label: t.label }))}
 			/>
 			<div className="w-px h-4 bg-[#e5e5e5] dark:bg-[#1f1f1f]" />
-			<Select
-				value={format}
-				onChange={onFormatChange}
-				options={FORMATS}
-			/>
+			<Select value={format} onChange={onFormatChange} options={FORMATS} />
 
 			{format === "pdf" ? (
 				<>
@@ -67,4 +64,4 @@ export function Toolbar({
 			</div>
 		</div>
 	);
-}
+});
