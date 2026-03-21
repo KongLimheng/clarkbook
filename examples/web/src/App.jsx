@@ -2313,7 +2313,13 @@ export default function App() {
 					options={TEMPLATES.map((t) => ({ value: t.id, label: t.label }))}
 				/>
 				<div className="w-px h-4 bg-[#e5e5e5] dark:bg-[#1f1f1f]" />
-				<Select value={format} onChange={setFormat} options={FORMATS} />
+				<Select
+					value={format}
+					onChange={(v) => {
+						setUrlState({ format: v, ...(v !== "pdf" ? { imgWidth: 1200, imgHeight: 0 } : {}) });
+					}}
+					options={FORMATS}
+				/>
 
 				{format === "pdf" ? (
 					<>
