@@ -23,5 +23,8 @@
     },
     "./plutobook.wasm": "./src/plutobook.wasm"
   },
-  "scripts": {}
+  "scripts": {},
+  "dependencies": {
+    "clarkbook": "^0.0.4"
+  }
 }
