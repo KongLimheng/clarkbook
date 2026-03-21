@@ -12,7 +12,7 @@ export const Toolbar = memo(function Toolbar({
 	const isReady = status === "ready";
 
 	return (
-		<div className="flex items-center gap-2 px-3 h-10 border-b border-[#e5e5e5] dark:border-[#1a1a1a] bg-white dark:bg-black shrink-0">
+		<div className="flex items-center gap-2 px-3 h-10 border-b border-[#e5e5e5] dark:border-[#1a1a1a] bg-white dark:bg-black shrink-0 overflow-x-auto">
 			<Select
 				value={templateId}
 				onChange={onTemplateChange}

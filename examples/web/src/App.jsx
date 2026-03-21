@@ -34,6 +34,7 @@ export default function App() {
 	);
 	const [status, setStatus] = useState("loading");
 	const [dark, setDark] = useState(() => localStorage.getItem("theme") !== "light");
+	const [activeTab, setActiveTab] = useState("editor");
 	const [previewUrl, setPreviewUrl] = useState(null);
 	const [bookReady, setBookReady] = useState(false);
 	const [renderMs, setRenderMs] = useState(null);
@@ -214,6 +215,36 @@ export default function App() {
 				onExport={handleExport}
 			/>
 
+			{/* Mobile tab bar */}
+			<div className="flex md:hidden shrink-0 border-b border-[#e5e5e5] dark:border-[#1a1a1a] bg-white dark:bg-black">
+				{["editor", "preview"].map((tab) => (
+					<button
+						key={tab}
+						type="button"
+						onClick={() => setActiveTab(tab)}
+						className={clsx(
+							"flex-1 h-9 text-xs font-medium capitalize transition-colors",
+							activeTab === tab
+								? "border-b-2 border-black dark:border-white text-black dark:text-white"
+								: "text-[#aaa] dark:text-[#555] hover:text-black dark:hover:text-white",
+						)}
+					>
+						{tab}
+					</button>
+				))}
+			</div>
+
+			{/* Mobile: single active pane */}
+			<div className="flex md:hidden flex-1 overflow-hidden">
+				{activeTab === "editor" ? (
+					<EditorPane html={html} onChange={setHtml} dark={dark} />
+				) : (
+					<PreviewPane previewUrl={previewUrl} format={format} status={status} />
+				)}
+			</div>
+
+			{/* Desktop: side-by-side resizable panels */}
+			<div className="hidden md:flex flex-1 overflow-hidden">
 			<PanelGroup direction="horizontal" className="flex-1 overflow-hidden">
 				<Panel defaultSize={50} minSize={20} className="flex flex-col overflow-hidden">
 					<EditorPane html={html} onChange={setHtml} dark={dark} />
@@ -223,6 +254,7 @@ export default function App() {
 					<PreviewPane previewUrl={previewUrl} format={format} status={status} />
 				</Panel>
 			</PanelGroup>
+			</div>
 
 			<StatusBar
 				html={html}

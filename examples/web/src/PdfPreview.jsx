@@ -11,19 +11,23 @@ export default function PdfPreview({ url }) {
     if (!url) return;
 
     const container = containerRef.current;
-    let cancelled = false;
+    let cancelToken = { cancelled: false };
 
     async function render() {
+      const token = { cancelled: false };
+      cancelToken.cancelled = true;
+      cancelToken = token;
+
       const doc = await pdfjs.getDocument(url).promise;
-      if (cancelled) return;
+      if (token.cancelled) return;
 
       container.innerHTML = "";
 
       const dpr = window.devicePixelRatio || 1;
-      const containerWidth = container.clientWidth || 800;
+      const containerWidth = container.clientWidth || container.parentElement?.clientWidth || 800;
 
       for (let pageNum = 1; pageNum <= doc.numPages; pageNum++) {
-        if (cancelled) break;
+        if (token.cancelled) break;
 
         const page = await doc.getPage(pageNum);
         const baseViewport = page.getViewport({ scale: 1 });
@@ -39,25 +43,27 @@ export default function PdfPreview({ url }) {
         canvas.style.marginBottom = "8px";
         canvas.style.boxShadow = "0 1px 4px rgba(0,0,0,0.12)";
 
-        container.appendChild(canvas);
-
-        await page.render({
-          canvasContext: canvas.getContext("2d"),
-          viewport,
-        }).promise;
+        if (!token.cancelled) {
+          container.appendChild(canvas);
+          await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+        }
       }
     }
 
     render().catch(console.error);
 
+    const observer = new ResizeObserver(() => render().catch(console.error));
+    observer.observe(container.parentElement);
+
     return () => {
-      cancelled = true;
+      cancelToken.cancelled = true;
+      observer.disconnect();
     };
   }, [url]);
 
   return (
     <div className="w-full h-full overflow-auto bg-[#f0f0f0] dark:bg-[#1a1a1a] p-4">
-      <div ref={containerRef} />
+      <div ref={containerRef} className="w-full" />
     </div>
   );
 }
