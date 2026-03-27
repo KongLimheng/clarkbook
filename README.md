@@ -1,4 +1,4 @@
-<img src="./cover.png">
+<img src="./cover.png" width=1998 height=1112>
 
 # ClarkBook
 
